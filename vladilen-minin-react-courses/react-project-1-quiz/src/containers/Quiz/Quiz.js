@@ -33,7 +33,7 @@ class Quiz extends Component {
         ]
       }
     ]
-  }
+  };
 
   onAnswerClickHandler = answerId => {
     if (this.state.answerState) {
@@ -54,7 +54,7 @@ class Quiz extends Component {
       this.setState({
         answerState: {[answerId]: 'success'},
         results
-      })
+      });
 
       const timeout = window.setTimeout(() => {
         if (this.isQuizFinished()) {
@@ -70,13 +70,13 @@ class Quiz extends Component {
         window.clearTimeout(timeout)
       }, 1000)
     } else {
-      results[question.id] = 'error'
+      results[question.id] = 'error';
       this.setState({
         answerState: {[answerId]: 'error'},
         results
       })
     }
-  }
+  };
 
   isQuizFinished() {
     return this.state.activeQuestion + 1 === this.state.quiz.length
@@ -89,7 +89,12 @@ class Quiz extends Component {
       isFinished: false,
       results: {}
     })
+  };
+
+  componentDidMount() {
+    console.log('Quiz ID = ', this.props.match.params.id);
   }
+
 
   render() {
     return (
@@ -113,6 +118,7 @@ class Quiz extends Component {
                 state={this.state.answerState}
               />
           }
+
         </div>
       </div>
     )
