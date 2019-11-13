@@ -5,7 +5,7 @@ import {createControl, validate, validateForm} from '../../form/FormFramework.js
 import Input from "../../components/UI/Input/Input";
 import Auxiliary from "../../hoc/Auxiliary/Auxiliary";
 import Select from "../../components/UI/Select/Select";
-import axios from 'axios';
+import axios from '../../axios/axios-quiz';
 
 
 function createOptionControl(number) {
@@ -63,7 +63,7 @@ export default class QuizCreator extends Component {
         };
         quiz.push(questionItem);
         this.setState({
-            quiz: [],
+            quiz,
             isFormValid: false,
             rightAnswerId: 1,
             formControls: createFormControls()
@@ -74,7 +74,7 @@ export default class QuizCreator extends Component {
         event.preventDefault();
 
         try {
-           await axios.post('https://react-quiz-c48c5.firebaseio.com/quizes.json', this.state.quiz);
+           await axios.post('/quizes.json', this.state.quiz);
             this.setState({
                 quiz: [],
                 isFormValid: false,
@@ -152,20 +152,23 @@ export default class QuizCreator extends Component {
 
                         {this._renderControls()}
 
-                        {select}
+                        { select }
 
                         <Button
-                            type={'primary'}
+                            type="primary"
                             onClick={this.addQuestionHandler}
                             disabled={!this.state.isFormValid}
-                        >Добавить вопрос</Button>
+                        >
+                            Добавить вопрос
+                        </Button>
 
                         <Button
-                            type={'success'}
+                            type="success"
                             onClick={this.createQuizHandler}
                             disabled={this.state.quiz.length === 0}
-                        >Создать тест</Button>
-
+                        >
+                            Создать тест
+                        </Button>
 
                     </form>
                 </div>
