@@ -9,7 +9,7 @@ export function auth(email, password, isLogin) {
             returnSecureToken: true
         };
 
-        let url ='https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBRj1R0UEHzbzdDaOOQIhjqWUvDsusN4Mo';
+        let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBRj1R0UEHzbzdDaOOQIhjqWUvDsusN4Mo';
 
         if (isLogin) {
             url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBRj1R0UEHzbzdDaOOQIhjqWUvDsusN4Mo';
@@ -45,6 +45,23 @@ export function logout() {
 
     return {
         type: AUTH_LOGOUT
+    }
+}
+
+export function autoLogin() {
+    return dispatch => {
+        const token = localStorage.getItem('token');
+        if(!token){
+            dispatch(logout())
+        } else{
+            const expirationDate = new Date(localStorage.getItem('expirationDate'))
+            if(expirationDate <= new Date()){
+                dispatch(logout())
+            } else{
+                dispatch(authSuccess(token));
+                dispatch(autoLogout((expirationDate.getTime() - new Date().getTime())/1000));
+            }
+        }
     }
 }
 
